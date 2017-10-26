@@ -1,46 +1,27 @@
-'use strict';
+// set up ======================================================================
+var express = require('express');
+var app = express(); 						// create our app w/ express
+var mongoose = require('mongoose'); 				// mongoose for mongodb
+var port = process.env.PORT || 8080; 				// set the port
+var database = require('./config/database'); 			// load the database config
+var morgan = require('morgan');
+var bodyParser = require('body-parser');
+var methodOverride = require('method-override');
 
-require('dotenv').config();
+// configuration ===============================================================
+mongoose.connect(database.localUrl); 	// Connect to local MongoDB instance. A remoteUrl is also available (modulus.io)
 
-const fs = require('fs');
-const join = require('path').join;
-const express = require('express');
-const mongoose = require('mongoose');
-const passport = require('passport');
-const config = require('./config');
+app.use(express.static('./public')); 		// set the static files location /public/img will be /img for users
+app.use(morgan('dev')); // log every request to the console
+app.use(bodyParser.urlencoded({'extended': 'true'})); // parse application/x-www-form-urlencoded
+app.use(bodyParser.json()); // parse application/json
+app.use(bodyParser.json({type: 'application/vnd.api+json'})); // parse application/vnd.api+json as json
+app.use(methodOverride('X-HTTP-Method-Override')); // override with the X-HTTP-Method-Override header in the request
 
-const models = join(__dirname, 'app/models');
-const port = process.env.PORT || 3000;
-const app = express();
 
-/**
- * Expose
- */
+// routes ======================================================================
+require('./app/routes.js')(app);
 
-module.exports = app;
-
-// Bootstrap models
-fs.readdirSync(models)
-  .filter(file => ~file.search(/^[^\.].*\.js$/))
-  .forEach(file => require(join(models, file)));
-
-// Bootstrap routes
-require('./config/passport')(passport);
-require('./config/express')(app, passport);
-require('./config/routes')(app, passport);
-
-connect()
-  .on('error', console.log)
-  .on('disconnected', connect)
-  .once('open', listen);
-
-function listen() {
-  if (app.get('env') === 'test') return;
-  app.listen(port);
-  console.log('Express app started on port ' + port);
-}
-
-function connect() {
-  var options = {server: {socketOptions: {keepAlive: 1}}};
-  return mongoose.connect(config.db, options).connection;
-}
+// listen (start app with node server.js) ======================================
+app.listen(port);
+console.log("App listening on port " + port);
