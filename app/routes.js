@@ -1,35 +1,40 @@
 //var user = require('./controllers/users.js');
-var passport = require('passport');
-var local = require('../config/passport/local');
+const local = require('../config/passport/local');
 
-module.exports = function(app, models, mongoose) {
-    // Sign Up //
-    app.post('/api/users', function(req, res) {
-        if (!req.body.email || !req.body.password) {
-            res.status(403);
-            return;
-        };
-        var User = models.user;
-        var newUser = new User();
-        newUser.email = req.body.email;
-        newUser.password = req.body.password;
-        newUser.save(function(err, user) {
-            if (err) {
-                console.log("Not created. Error:" + err);
-            };
-            console.log(user.email + " created");
-            models.user.find({}, function(err, users) {
-                console.log(users);
-            })
-        });
+
+const models = {};
+// models ============================================================
+
+module.exports = function (app, passport, models) {
+
+  // Sign Up //
+  app.post('/api/users', (req, res) => {
+    let UserModel = models.user;
+    let user = new UserModel();
+
+    if (!req.body.email || !req.body.password) {
+      return res.status(403).json({'msg': 'please check email or password'});
+    }
+
+    user.email = req.body.email;
+    user.password = req.body.password;
+
+    user.save((err, user) => {
+      if (err) {
+        console.log("Not created. Error:" + err);
+        return res.status(403).json({'msg': 'something went wrong'})
+      }
+      models.user.find({}, (err, users) => {
+        return res.json(users);
+      })
     });
+  });
 
-    // Sign In //
-    app.post('/api/login',
-        passport.authenticate('local'),
-        function(req, res) {
-            res.status(200);
-        }
-    );
+  // Sign In //
+  app.post('/api/login',
+    passport.authenticate('local'),
+    (req, res) => {
+      return res.json(req.user);
+    });
 
 };

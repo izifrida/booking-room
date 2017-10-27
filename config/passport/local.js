@@ -25,7 +25,7 @@ module.exports = new LocalStrategy({
       if (!user.authenticate(password)) {
         return done(null, false, {message: 'Invalid password'});
       }
-      console.log(User)
+
       return done(null, user);
     });
   }
