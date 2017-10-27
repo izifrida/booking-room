@@ -19,8 +19,12 @@ app.use(bodyParser.json({type: 'application/vnd.api+json'})); // parse applicati
 app.use(methodOverride('X-HTTP-Method-Override')); // override with the X-HTTP-Method-Override header in the request
 
 
+// models ============================================================
+var models = {}
+models.user = require('./app/models/user-schema.js')(mongoose)
+
 // routes ======================================================================
-require('./app/routes.js')(app);
+require('./app/routes.js')(app, models, mongoose);
 
 // listen (start app with node server.js) ======================================
 app.listen(port);
