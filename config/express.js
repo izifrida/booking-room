@@ -1,8 +1,8 @@
-var session = require("express-session");
-var morgan = require('morgan');
-var bodyParser = require('body-parser');
-var methodOverride = require('method-override');
-var database = require('./database.js'); 			// load the database config
+const session = require("express-session");
+const morgan = require('morgan');
+const bodyParser = require('body-parser');
+const methodOverride = require('method-override');
+const database = require('./database.js'); 			// load the database config
 
 module.exports = function (app, passport, mongoose) {
 // configuration ==============================================================

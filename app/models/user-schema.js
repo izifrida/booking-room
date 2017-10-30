@@ -1,12 +1,12 @@
 //  Module dependencies //
 
-var crypto = require('crypto');
+const crypto = require('crypto');
 
 module.exports = function(mongoose) {
-    var collection = 'User';
-    var Schema = mongoose.Schema;
+    const collection = 'User';
+    const Schema = mongoose.Schema;
 
-    var UserSchema = new Schema({
+    const UserSchema = new Schema({
         email: { type: String, default: '' },
         hashed_password: { type: String, default: '' },
         salt: { type: String, default: '' },
