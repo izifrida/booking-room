@@ -1,40 +1,22 @@
 //var user = require('./controllers/users.js');
 const local = require('../config/passport/local');
-
-
+const user = require('../app/controllers/user.controller');
 const models = {};
-// models ============================================================
 
-module.exports = function (app, passport, models) {
+const auth = require('../config/middleware/authorization');
 
-  // Sign Up //
-  app.post('/api/users', (req, res) => {
-    let UserModel = models.user;
-    let user = new UserModel();
+module.exports = function (app, passport) {
 
-    if (!req.body.email || !req.body.password) {
-      return res.status(403).json({'msg': 'please check email or password'});
-    }
+    // Sign Up //
+    app.post('/api/users', user.create);
 
-    user.email = req.body.email;
-    user.password = req.body.password;
+    //Get all users //
+    app.get('/api/users', user.getAll);
 
-    user.save((err, user) => {
-      if (err) {
-        console.log("Not created. Error:" + err);
-        return res.status(403).json({'msg': 'something went wrong'})
-      }
-      models.user.find({}, (err, users) => {
-        return res.json(users);
-      })
-    });
-  });
+    // Sign In //
+    app.post('/api/login', passport.authenticate('local'), user.logIn);
 
-  // Sign In //
-  app.post('/api/login',
-    passport.authenticate('local'),
-    (req, res) => {
-      return res.json(req.user);
-    });
+    // Edit user //
+    app.put('/api/users', auth.isAuth, user.editUser);
 
 };

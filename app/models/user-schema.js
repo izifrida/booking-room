@@ -10,6 +10,7 @@ module.exports = function(mongoose) {
         email: { type: String, default: '' },
         hashed_password: { type: String, default: '' },
         salt: { type: String, default: '' },
+        admin: {type: Boolean, default: false}
     });
 
     UserSchema
