@@ -19,4 +19,11 @@ module.exports = function (app, passport) {
     // Edit user //
     app.put('/api/users', auth.isAuth, user.editUser);
 
+    // Sign out //
+    app.get('/api/logout', (req, res) => {
+        req.logout();
+        res.send('logged out');
+    });
+
+
 };
