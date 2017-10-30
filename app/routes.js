@@ -1,57 +1,29 @@
-var Todo = require('./models/todo');
+//var user = require('./controllers/users.js');
+const local = require('../config/passport/local');
+const user = require('../app/controllers/user.controller');
+const models = {};
 
-function getTodos(res) {
-  Todo.find(function (err, todos) {
+const auth = require('../config/middleware/authorization');
 
-    // if there is an error retrieving, send the error. nothing after res.send(err) will execute
-    if (err) {
-      res.send(err);
-    }
+module.exports = function (app, passport) {
 
-    res.json(todos); // return all todos in JSON format
-  });
-};
+    // Sign Up //
+    app.post('/api/users', user.create);
 
-module.exports = function (app) {
+    //Get all users //
+    app.get('/api/users', user.getAll);
 
-  // api ---------------------------------------------------------------------
-  // get all todos
-  app.get('/api/todos', function (req, res) {
-    // use mongoose to get all todos in the database
-    getTodos(res);
-  });
+    // Sign In //
+    app.post('/api/login', passport.authenticate('local'), user.logIn);
 
-  // create todo and send back all todos after creation
-  app.post('/api/todos', function (req, res) {
+    // Edit user //
+    app.put('/api/users', auth.isAuth, user.editUser);
 
-    // create a todo, information comes from AJAX request from Angular
-    Todo.create({
-      text: req.body.text,
-      done: false
-    }, function (err, todo) {
-      if (err)
-        res.send(err);
-
-      // get and return all the todos after you create another
-      getTodos(res);
+    // Sign out //
+    app.get('/api/logout', (req, res) => {
+        req.logout();
+        res.send('logged out');
     });
 
-  });
 
-  // delete a todo
-  app.delete('/api/todos/:todo_id', function (req, res) {
-    Todo.remove({
-      _id: req.params.todo_id
-    }, function (err, todo) {
-      if (err)
-        res.send(err);
-
-      getTodos(res);
-    });
-  });
-
-  // application -------------------------------------------------------------
-  app.get('*', function (req, res) {
-    res.sendFile(__dirname + '/public/index.html'); // load the single view file (angular will handle the page changes on the front-end)
-  });
 };
