@@ -6,6 +6,7 @@
 
 const mongoose = require('mongoose');
 const LocalStrategy = require('passport-local').Strategy;
+const userSchema = require('../../app/user/user-schema.js')(mongoose);
 const User = mongoose.model('User');
 
 /**

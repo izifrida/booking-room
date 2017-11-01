@@ -1,9 +1,19 @@
-var morgan = require('morgan');
-var bodyParser = require('body-parser');
-var methodOverride = require('method-override');
-var database = require('./database.js'); 			// load the database config
+let morgan = require('morgan');
+let bodyParser = require('body-parser');
+let methodOverride = require('method-override');
+let database = require('./database.js'); 			// load the database config
+const passport = require('passport');
+const express = require('express');
+const models = {};
+const mongoose = require('mongoose');
+const app = express.app;
 
-module.exports = function (app, passport, mongoose) {
+
+module.exports = function () {
+
+  //DB
+  mongoose.connect(database.localUrl);
+
 // configuration ==============================================================
   app.use(morgan('dev')); // log every request to the console
   app.use(bodyParser.urlencoded({'extended': 'true'})); // parse application/x-www-form-urlencoded
@@ -14,6 +24,4 @@ module.exports = function (app, passport, mongoose) {
   // use passport session
   app.use(passport.initialize());
   app.use(passport.session());
-
-
 };

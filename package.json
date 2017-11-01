@@ -1,9 +1,16 @@
 {
-  "name": "node-todo",
+  "name": "booking-room",
   "version": "0.0.1",
-  "description": "Simple todo application.",
+  "description": "Booking homes manager ",
   "main": "server.js",
-  "author": "Scotch",
+  "author": "LL",
+  "scripts": {
+    "test": "NODE_ENV=test  mocha --require co-mocha --timeout 30000 test/ '**/*.spec.js'",
+    "coverage": "NODE_ENV=test istanbul cover _mocha -- --require co-mocha --timeout 20000  test/ 'app/**/*.spec.js'",
+    "start": "node server.js",
+    "debug": "node --debug server.js",
+    "lint": "eslint src --quiet"
+  },
   "dependencies": {
     "body-parser": "^1.18.2",
     "crypto": "^1.0.1",
@@ -14,5 +21,8 @@
     "morgan": "^1.9.0",
     "passport": "^0.4.0",
     "passport-local": "^1.0.0"
+  },
+  "devDependencies": {
+    "co": "^4.6.0"
   }
 }
