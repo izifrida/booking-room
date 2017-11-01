@@ -1,8 +1,8 @@
 //var user = require('./controllers/users.js');
-const local = require('../config/passport/local');
+//const local = require('../config/passport/local');
 const express = require('express');
 const app = express.app;
-const passport = require('passport');
+//const passport = require('passport');
 const models = {};
 const apiRouter = express.Router();
 const router = express.Router();
@@ -14,6 +14,7 @@ apiRouter.use('/api', router);
 
 router.use('/users', require('./user'));
 
+/*
 // Sign In //
 router.post('/login',
   passport.authenticate('local'),
@@ -21,6 +22,7 @@ router.post('/login',
     console.log('here');
     return res.json(req.user);
   });
+*/
 
 
 module.exports = apiRouter;

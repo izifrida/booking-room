@@ -8,7 +8,7 @@
     "test": "NODE_ENV=test  mocha --require co-mocha --timeout 30000 test/ '**/*.spec.js'",
     "coverage": "NODE_ENV=test istanbul cover _mocha -- --require co-mocha --timeout 20000  test/ 'app/**/*.spec.js'",
     "start": "node server.js",
-    "debug": "node --debug server.js",
+    "debug": "node --inspect server.js",
     "lint": "eslint src --quiet"
   },
   "dependencies": {
