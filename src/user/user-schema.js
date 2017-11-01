@@ -2,8 +2,6 @@
 const crypto = require('crypto');
 const mongoose = require('mongoose');
 
-
-let collection = 'User';
 let Schema = mongoose.Schema;
 
 let UserSchema = new Schema({
