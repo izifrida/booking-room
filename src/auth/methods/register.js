@@ -1,4 +1,6 @@
-const User = require('../user.model');
+"use strict";
+
+const User = require('../../user/user.model');
 
 module.exports = async function (req, res, next) {
   let user;
