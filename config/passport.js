@@ -7,16 +7,6 @@ let userModel = new User();
 
 const local = require('./strategy/local');
 
-passport.serializeUser(function (user, done) {
-    done(null, user.id);
-});
-
-passport.deserializeUser(function (id, done) {
-    userModel.user.findById(id, function (err, user) {
-        done(err, user);
-    });
-});
-
 // use these strategies
 passport.use(local);
 

@@ -5,15 +5,14 @@
   "main": "server.js",
   "author": "LL",
   "scripts": {
-    "test": "NODE_ENV=test  mocha --require co-mocha --timeout 30000 test/ '**/*.spec.js'",
+    "test": "set NODE_ENV=test && mocha --delay",
     "coverage": "NODE_ENV=test istanbul cover _mocha -- --require co-mocha --timeout 20000  test/ 'app/**/*.spec.js'",
-    "start": "node server.js",
+    "start": "set NODE_ENV=development && node server.js",
     "debug": "node --inspect server.js",
     "lint": "eslint src --quiet"
   },
   "dependencies": {
     "body-parser": "^1.18.2",
-    "cookie-parser": "^1.4.3",
     "crypto": "^1.0.1",
     "express": "^4.10.8",
     "express-session": "^1.15.6",
@@ -25,6 +24,10 @@
     "passport-local": "^1.0.0"
   },
   "devDependencies": {
-    "co": "^4.6.0"
+    "chai": "^4.1.2",
+    "co": "^4.6.0",
+    "mocha": "^4.0.1",
+    "superagent": "^3.8.0",
+    "supertest": "^3.0.0"
   }
 }

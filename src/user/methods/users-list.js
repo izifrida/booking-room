@@ -3,6 +3,7 @@
 const User = require('../user.model');
 
 module.exports = async function (req, res, next) {
+
     let users;
     let userModel = new User();
     try {
@@ -10,5 +11,6 @@ module.exports = async function (req, res, next) {
     } catch (ex) {
         console.log(ex);
     }
+
     return res.send(users);
 };

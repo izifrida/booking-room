@@ -10,7 +10,7 @@ class User {
 
     createUser(data) {
         return this.user.create(data)
-            .then(user => user.toJSON());
+            .then(user => user.toJSON())
     }
 
     updateUser(data) {
@@ -24,6 +24,13 @@ class User {
             if (err) console.log(err);
             return users => users.toJSON();
         })
+    }
+
+    deleteAll() {
+        return this.user.remove({}, (err) => {
+            if (err) console.log(err);
+            return console.log("All users deleted")
+        });
     }
 }
 

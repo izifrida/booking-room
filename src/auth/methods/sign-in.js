@@ -3,6 +3,8 @@
 const mongoose = require('mongoose');
 const passport = require('passport');
 const passportConfig = require('../../../config/passport');
+const jwt = require('jsonwebtoken');
+const config = require('../../../config/config');
 
 module.exports = function (req, res, next) {
     passport.authenticate('local',
@@ -10,9 +12,15 @@ module.exports = function (req, res, next) {
             if (err) return next(err);
 
             else if (user) {
-                req.logIn(user, (err) => {
+                req.logIn(user, {session: false}, (err) => {  // disable session: {session: false}
                     if (err) return next(err);
-                    return res.send('Signed in!!!');
+                    const payload = {
+                        id: user._id
+                    };
+                    const token = jwt.sign(payload, config.secret, {
+                        expiresIn: 1440 * 60 // expires in 24 hours
+                    });
+                    return res.json({token: token});
                 })
             } else return res.send(info.message)
         }

@@ -10,5 +10,6 @@ apiRouter.use('/api', router);
 
 router.use('/users', auth.isAuthorized, require('./user'));
 router.use('/auth', require('./auth'));
+router.use(require('../config/error-handler'));
 
 module.exports = apiRouter;
