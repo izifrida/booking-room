@@ -1,28 +1,15 @@
-//var user = require('./controllers/users.js');
-//const local = require('../config/passport/local');
-//const passport = require('passport');
+"use strict";
+
 const express = require('express');
 const app = express.app;
-const models = {};
 const apiRouter = express.Router();
 const router = express.Router();
-
-// models ============================================================
+const auth = require('../config/middleware/authorization');
 
 apiRouter.use('/api', router);
 
-
-router.use('/users', require('./user'));
-
-/*
-// Sign In //
-router.post('/login',
-  passport.authenticate('local'),
-  (req, res) => {
-    console.log('here');
-    return res.json(req.user);
-  });
-*/
-
+router.use('/users', auth.isAuthorized, require('./user'));
+router.use('/auth', require('./auth'));
+router.use(require('../config/error-handler'));
 
 module.exports = apiRouter;
